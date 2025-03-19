@@ -1,5 +1,3 @@
-// script.js
-
 // Sample books in the library
 let books = [
     { id: 1, title: "The Great Gatsby", author: "F. Scott Fitzgerald", year: 1925, isAvailable: true },
@@ -10,6 +8,11 @@ let books = [
 // Function to display books on the page
 function displayBooks() {
     const libraryDiv = document.getElementById("library");
+    if (!libraryDiv) {
+        console.error("Library div not found!");
+        return;
+    }
+
     libraryDiv.innerHTML = ""; // Clear existing content
 
     books.forEach(book => {
@@ -32,7 +35,12 @@ function displayBooks() {
 // Function to borrow a book
 function borrowBook(bookId) {
     let book = books.find(b => b.id === bookId);
-    if (book && book.isAvailable) {
+    if (!book) {
+        console.error("Book not found!");
+        return;
+    }
+
+    if (book.isAvailable) {
         book.isAvailable = false;
         alert(`You have borrowed "${book.title}".`);
         displayBooks();
@@ -42,12 +50,18 @@ function borrowBook(bookId) {
 // Function to return a book
 function returnBook(bookId) {
     let book = books.find(b => b.id === bookId);
-    if (book && !book.isAvailable) {
+    if (!book) {
+        console.error("Book not found!");
+        return;
+    }
+
+    if (!book.isAvailable) {
         book.isAvailable = true;
         alert(`You have returned "${book.title}".`);
         displayBooks();
     }
 }
 
-// Initial display of books
-displayBooks();
+// Ensure the script runs only after the DOM is fully loaded
+document.addEventListener("DOMContentLoaded", displayBooks);
+
